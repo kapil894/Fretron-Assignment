@@ -1,14 +1,14 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <numeric> // Include this header for std::accumulate
+#include <numeric> 
 
 struct Person {
     std::string name;
-    int amount_paid;
-    std::vector<int> apples;
+    int paid_amount;
+    std::vector<int> apple;
     int total_weight() const {
-        return std::accumulate(apples.begin(), apples.end(), 0);
+        return std::accumulate(apple.begin(), apple.end(), 0);
     }
     int target_weight;
 };
@@ -20,7 +20,7 @@ void distribute_apples(std::vector<int>& apple_weights, std::vector<Person>& peo
             return (a.target_weight - a.total_weight()) > (b.target_weight - b.total_weight());
         });
         // Give the apple to the person with the largest difference
-        people[0].apples.push_back(weight);
+        people[0].apple.push_back(weight);
     }
 }
 
@@ -35,13 +35,13 @@ int main() {
     // Calculate the total amount paid
     int total_amount_paid = 0;
     for (const Person& person : people) {
-        total_amount_paid += person.amount_paid;
+        total_amount_paid += person.paid_amount;
     }
 
     // Calculate the target weight for each person
     int total_weight = 0;
     for (Person& person : people) {
-        person.target_weight = (person.amount_paid * 1000) / total_amount_paid; // Assuming 1 unit weight = 1 gram
+        person.target_weight = (person.paid_amount * 1000) / total_amount_paid; 
         total_weight += person.target_weight;
     }
 
@@ -67,9 +67,9 @@ int main() {
     std::cout << "Distribution Result:\n";
     for (const Person& person : people) {
         std::cout << person.name << ": ";
-        for (size_t i = 0; i < person.apples.size(); ++i) {
-            std::cout << person.apples[i];
-            if (i < person.apples.size() - 1) {
+        for (size_t i = 0; i < person.apple.size(); ++i) {
+            std::cout << person.apple[i];
+            if (i < person.apple.size() - 1) {
                 std::cout << ", ";
             }
         }

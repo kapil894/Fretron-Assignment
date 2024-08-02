@@ -1,21 +1,25 @@
-#include <SFML/Graphics.hpp>
-#include <vector>
 #include <iostream>
+#include <vector>
+#include <iomanip>
 
 // Define a FlightPath type
-typedef std::vector<sf::Vector2f> FlightPath;
+typedef std::vector<std::pair<int, int>> FlightPath;
 
-// Function to draw the flight paths
-void drawFlightPaths(sf::RenderWindow& window, const std::vector<FlightPath>& flightPaths) {
-    sf::Color colors[] = {sf::Color::Red, sf::Color::Green, sf::Color::Blue};
+// Function to print the flight paths
+void printFlightPaths(const std::vector<FlightPath>& flightPaths) {
+    int pathNumber = 1;
 
-    for (size_t i = 0; i < flightPaths.size(); ++i) {
-        sf::VertexArray lines(sf::LinesStrip, flightPaths[i].size());
-        for (size_t j = 0; j < flightPaths[i].size(); ++j) {
-            lines[j].position = flightPaths[i][j];
-            lines[j].color = colors[i % 3];
+    for (const auto& path : flightPaths) {
+        std::cout << "Path " << pathNumber++ << std::endl;
+        std::cout << "=======" << std::endl;
+        
+        for (size_t i = 0; i < path.size(); ++i) {
+            std::cout << (i == 0 ? "Start" : "Move") << " (" 
+                      << path[i].first << ", " << path[i].second << ")" << std::endl;
         }
-        window.draw(lines);
+        
+        std::cout << "Arrive (" << path.back().first << ", " << path.back().second << ")" << std::endl;
+        std::cout << std::endl;
     }
 }
 
@@ -27,20 +31,7 @@ int main() {
 
     std::vector<FlightPath> flightPaths = { flight1, flight2, flight3 };
 
-    // Create the window
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Flight Paths");
-
-    while (window.isOpen()) {
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
-
-        window.clear();
-        drawFlightPaths(window, flightPaths);
-        window.display();
-    }
+    printFlightPaths(flightPaths);
 
     return 0;
 }
